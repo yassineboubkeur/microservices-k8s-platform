@@ -1,19 +1,15 @@
-const express = require('express')
-const app = express()
-const PORT = process.env.PORT || 3000
+const app = require('./src/app')
+const config = require('./src/config')
 
-app.get('/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    service: 'api-gateway',
-    timestamp: new Date().toISOString()
-  })
+const server = app.listen(config.port, () => {
+  console.log(`API Gateway running on port ${config.port}`)
+  console.log(`Environment: ${config.nodeEnv}`)
 })
 
-app.get('/', (req, res) => {
-  res.json({ message: 'API Gateway running' })
+process.on('SIGTERM', () => {
+  server.close(() => process.exit(0))
 })
 
-app.listen(PORT, () => {
-  console.log(`API Gateway listening on port ${PORT}`)
+process.on('SIGINT', () => {
+  server.close(() => process.exit(0))
 })
