@@ -1,0 +1,21 @@
+replicaCount: 3
+
+image:
+  tag: latest
+
+env:
+  NODE_ENV: "production"
+  DB_HOST: "pg-prod"
+  DB_NAME: "productdb"
+
+resources:
+  requests:
+    cpu: "200m"
+    memory: "256Mi"
+  limits:
+    cpu: "1000m"
+    memory: "512Mi"
+
+autoscaling:
+  minReplicas: 3
+  maxReplicas: 10
