@@ -11,7 +11,7 @@ app.get('/health', async (req, res) => {
     await pool.query('SELECT 1')
     res.json({ status: 'ok', service: 'user-service', db: 'connected' })
   } catch (err) {
-    res.status(503).json({ status: 'error', db: err.message })
+     res.status(503).json({ status: 'error', service: 'user-service', db: 'disconnected' })
   }
 })
 
