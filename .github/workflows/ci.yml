@@ -27,7 +27,7 @@ jobs:
           cache-dependency-path: services/api-gateway/package-lock.json
       - name: Install dependencies
         working-directory: services/api-gateway
-        run: npm ci
+        run: npm install
       - name: Run tests
         working-directory: services/api-gateway
         run: npm test
@@ -62,7 +62,7 @@ jobs:
           cache-dependency-path: services/user-service/package-lock.json
       - name: Install dependencies
         working-directory: services/user-service
-        run: npm ci
+        run: npm install
       - name: Run tests
         working-directory: services/user-service
         run: npm test
