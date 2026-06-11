@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: ghcr.io/yassineboubkeur/user-service
-  tag: a775863
+  tag: a3afde4
   pullPolicy: Always
 
 imagePullSecrets:
