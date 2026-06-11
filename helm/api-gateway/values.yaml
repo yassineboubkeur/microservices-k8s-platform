@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: ghcr.io/yassineboubkeur/api-gateway
-  tag: ac36ff8
+  tag: 29619db
   pullPolicy: Always
 
 imagePullSecrets:
