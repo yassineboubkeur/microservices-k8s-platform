@@ -30,6 +30,10 @@ app.get('/metrics', (req, res) => {
   res.json({ status: 'ok', uptime: process.uptime(), memory: process.memoryUsage() })
 })
 
+app.get('/version', (req, res) => {
+  res.json({ version: '1.1.0', service: 'api-gateway' })
+})
+
 // Routes
 app.use('/api/users', userRoutes)
 app.use('/api', productRoutes)
