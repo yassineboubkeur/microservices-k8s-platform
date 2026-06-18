@@ -5,6 +5,7 @@ const logger = require('./middleware/logger')
 const rateLimiter = require('./middleware/rateLimiter')
 const userRoutes = require('./routes/userRoutes')
 const productRoutes = require('./routes/productRoutes')
+const promClient = require('prom-client')
 
 const app = express()
 
@@ -20,16 +21,24 @@ app.use(logger)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+promClient.collectDefaultMetrics()
+
+
 // Health check — mkhsssh auth aw rate limit
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', service: 'api-gateway', timestamp: new Date().toISOString() })
+  res.json({
+    status: 'ok',
+    service: 'api-gateway',
+    version: process.env.CANARY === 'true' ? 'canary' : 'stable',
+    timestamp: new Date().toISOString()
+  })
 })
 
 // Metrics endpoint — Prometheus ghadi yscrape hna
-app.get('/metrics', (req, res) => {
-  res.json({ status: 'ok', uptime: process.uptime(), memory: process.memoryUsage() })
+app.get('/metrics', async (req, res) => {
+  res.set('Content-Type', promClient.register.contentType)
+  res.send(await promClient.register.metrics())
 })
-
 app.get('/version', (req, res) => {
   res.json({ version: '1.1.0', service: 'api-gateway' })
 })

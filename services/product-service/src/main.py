@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
+from fastapi import Response
 from .config.database import test_connection
 from .controllers.productController import router as product_router
 from .controllers.orderController import router as order_router
@@ -21,8 +23,4 @@ def health():
 
 @app.get("/metrics")
 def metrics():
-    return {
-        "status": "ok",
-        "uptime": time.process_time(),
-        "memory": psutil.virtual_memory().percent
-    }
+    return Response(content=generate_latest(), media_type=CONTENT_TYPE_LATEST)

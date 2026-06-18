@@ -3,8 +3,11 @@ const helmet = require('helmet')
 const morgan = require('morgan')
 const pool = require('./config/database')
 const userRoutes = require('./routes/userRoutes')
+const promClient = require('prom-client')
 
 const app = express()
+
+promClient.collectDefaultMetrics()
 
 app.get('/health', async (req, res) => {
   try {
@@ -15,8 +18,10 @@ app.get('/health', async (req, res) => {
   }
 })
 
-app.get('/metrics', (req, res) => {
-  res.json({ status: 'ok', uptime: process.uptime() })
+
+app.get('/metrics', async (req, res) => {
+  res.set('Content-Type', promClient.register.contentType)
+  res.send(await promClient.register.metrics())
 })
 
 
